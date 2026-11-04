@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detector de Precios Inflados Mercado Libre (Especial Buen Fin) — Radar MX</title>
+  <meta name="description" content="Verifica gratis si un vendedor de Mercado Libre México infló el precio antes del Buen Fin. Pega cualquier link y audita el descuento real al instante.">
+  <meta name="p:domain_verify" content="6c8cce62096e8179cbec3a3ea42580bd">
+  <link rel="canonical" href="https://radar-herramientas-mx.github.io/">
+  <link rel="alternate" type="application/rss+xml" title="Radar de Herramientas MX (RSS)" href="https://radar-herramientas-mx.github.io/rss.xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="🕵️‍♂️ Detector de Precios Inflados de Mercado Libre (Especial Buen Fin)">
+  <meta property="og:description" content="¿Le subieron el precio ayer para fingir un 40% de descuento hoy? Pega aquí cualquier link de Mercado Libre y audita el precio real.">
+  <meta property="og:url" content="https://radar-herramientas-mx.github.io/">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background: #0d0f12; color: #e6edf3; line-height: 1.5; }
+    header { background: #141820; border-bottom: 1px solid #262c36; padding: 14px 20px; position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 1080px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .brand { display: flex; align-items: center; gap: 10px; color: #ffffff; text-decoration: none; font-weight: 900; font-size: 17px; }
+    .brand-tag { background: #ff6b00; color: #000; font-size: 11px; font-weight: 800; padding: 3px 7px; border-radius: 4px; }
+    .header-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .tg-btn-top { background: #25d366; color: #000; text-decoration: none; font-weight: 800; font-size: 13px; padding: 8px 14px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; }
+    .bot-btn-top { background: #1f2937; border: 1px solid #374151; color: #00e5ff; text-decoration: none; font-weight: 700; font-size: 13px; padding: 8px 13px; border-radius: 8px; }
+    .detector-sec { max-width: 1080px; margin: 22px auto 20px; padding: 0 16px; }
+    .detector-box { background: linear-gradient(135deg, #171d26 0%, #10141b 100%); border: 2px solid #ff6b00; border-radius: 16px; padding: 24px; box-shadow: 0 12px 34px rgba(255, 107, 0, 0.14); }
+    .buenfin-pill { display: inline-block; background: #ffd600; color: #000; font-weight: 900; font-size: 11.5px; padding: 4px 10px; border-radius: 5px; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.4px; }
+    .detector-box h1 { font-size: 24px; font-weight: 900; color: #ffffff; margin-bottom: 8px; line-height: 1.25; }
+    .detector-box p { font-size: 14.5px; color: #b0b8c4; max-width: 780px; margin-bottom: 16px; }
+    .audit-form { display: flex; gap: 10px; flex-wrap: wrap; }
+    .audit-input { flex: 1; min-width: 250px; background: #0d1117; border: 1px solid #374151; color: #ffffff; padding: 14px 16px; border-radius: 10px; font-size: 15px; }
+    .audit-input:focus { outline: none; border-color: #ffd600; }
+    .audit-btn { background: #ff6b00; color: #000000; border: none; font-weight: 900; font-size: 15px; padding: 14px 22px; border-radius: 10px; cursor: pointer; white-space: nowrap; }
+    .audit-btn:hover { background: #ff852b; }
+    .audit-result { margin-top: 18px; display: none; background: #0d1117; border: 1px solid #28303d; border-radius: 12px; padding: 18px; }
+    .res-grid { display: grid; grid-template-columns: 110px 1fr; gap: 16px; align-items: center; }
+    @media (max-width: 560px) { .res-grid { grid-template-columns: 1fr; } }
+    .res-img { width: 110px; height: 110px; object-fit: contain; background: #fff; border-radius: 10px; padding: 6px; }
+    .res-verdict { display: inline-block; font-size: 12px; font-weight: 900; padding: 4px 9px; border-radius: 5px; margin-bottom: 6px; }
+    .v-good { background: #25d366; color: #000; }
+    .v-warn { background: #ffd600; color: #000; }
+    .v-bad { background: #f85149; color: #fff; }
+    .res-title { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .res-note { font-size: 13.5px; color: #c9d1d9; margin-bottom: 12px; }
+    .res-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-res-buy { background: #25d366; color: #000; text-decoration: none; font-weight: 900; font-size: 14px; padding: 11px 18px; border-radius: 8px; }
+    .btn-res-tg { background: #1f2937; border: 1px solid #374151; color: #00e5ff; text-decoration: none; font-weight: 700; font-size: 13px; padding: 11px 15px; border-radius: 8px; }
+    .share-bar { margin-top: 14px; padding-top: 12px; border-top: 1px solid #21262d; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 12.5px; color: #8b949e; }
+    .wa-share { color: #25d366; text-decoration: none; font-weight: 800; }
+    .controls { max-width: 1080px; margin: 0 auto 20px; padding: 0 16px; }
+    .sec-title { font-size: 18px; font-weight: 800; color: #ffffff; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .sec-title span { font-size: 12px; color: #00e5ff; font-weight: 600; }
+    .search-input { width: 100%; background: #161b22; border: 1px solid #30363d; color: #ffffff; padding: 12px 16px; border-radius: 10px; font-size: 15px; margin-bottom: 12px; }
+    .search-input:focus { outline: none; border-color: #00e5ff; }
+    .cat-bar { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; }
+    .cat-btn { background: #161b22; border: 1px solid #28303d; color: #c9d1d9; padding: 7px 13px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .cat-btn.active, .cat-btn:hover { background: #00e5ff; color: #000000; border-color: #00e5ff; font-weight: 800; }
+    .feed-grid { max-width: 1080px; margin: 0 auto; padding: 0 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(460px, 1fr)); gap: 18px; }
+    @media (max-width: 600px) { .feed-grid { grid-template-columns: 1fr; } }
+    .deal-card { background: #161b22; border: 1px solid #28303d; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 6px 20px rgba(0,0,0,0.35); }
+    .card-top { display: grid; grid-template-columns: 130px 1fr; gap: 16px; align-items: start; margin-bottom: 12px; }
+    @media (max-width: 460px) { .card-top { grid-template-columns: 105px 1fr; gap: 12px; } }
+    .card-img-wrap { position: relative; background: #ffffff; border-radius: 10px; padding: 8px; display: flex; justify-content: center; align-items: center; height: 130px; }
+    .card-img-wrap img { max-width: 100%; max-height: 114px; object-fit: contain; }
+    .card-badges { position: absolute; top: 6px; left: 6px; display: flex; flex-direction: column; gap: 4px; }
+    .b-disc { background: #ffd600; color: #000; font-size: 11px; font-weight: 900; padding: 2px 6px; border-radius: 4px; }
+    .b-full { background: #00e5ff; color: #000; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; }
+    .b-best { background: #ff6b00; color: #000; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; }
+    .card-cat { font-size: 11px; color: #00e5ff; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+    .card-meta h2 { font-size: 16px; line-height: 1.3; margin: 4px 0 6px; }
+    .card-meta h2 a { color: #ffffff; text-decoration: none; }
+    .card-meta h2 a:hover { color: #00e5ff; }
+    .card-story { font-size: 13.5px; color: #b0b8c4; line-height: 1.45; }
+    .card-product-name { font-size: 12.5px; color: #8b949e; background: #0d1117; padding: 7px 10px; border-radius: 6px; margin-bottom: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card-bottom { display: flex; justify-content: space-between; align-items: center; gap: 12px; border-top: 1px solid #21262d; padding-top: 12px; flex-wrap: wrap; }
+    .p-now { font-size: 24px; font-weight: 900; color: #25d366; margin-right: 8px; }
+    .p-old { font-size: 14px; color: #6e7681; text-decoration: line-through; }
+    .p-audit { font-size: 11.5px; color: #8b949e; }
+    .cta-block { display: flex; flex-direction: column; gap: 5px; min-width: 195px; }
+    .btn-meli { background: #25d366; color: #000000; text-decoration: none; font-weight: 900; font-size: 13.5px; padding: 10px 14px; border-radius: 8px; text-align: center; }
+    .btn-meli:hover { background: #1fb858; }
+    .btn-detail { color: #8b949e; text-decoration: none; font-size: 11.5px; text-align: center; }
+    .btn-detail:hover { color: #ffffff; }
+    footer { max-width: 1080px; margin: 48px auto 0; padding: 24px 16px 40px; border-top: 1px solid #21262d; font-size: 12px; color: #6e7681; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="brand">🕵️‍♂️ RADAR ANTI-HUMO <span class="brand-tag">BUEN FIN MX</span></a>
+      <div class="header-actions">
+        <a href="https://t.me/herramientas_radar_bot" target="_blank" rel="noopener" class="bot-btn-top">🤖 Bot Auditor en Telegram</a>
+        <a href="https://t.me/ofertas_herramientas_mx" target="_blank" rel="noopener" class="tg-btn-top">📲 Canal de Remates (4/día)</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="detector-sec">
+    <div class="detector-box">
+      <span class="buenfin-pill">🕵️‍♂️ DETECTOR DE PRECIOS INFLADOS • ESPECIAL BUEN FIN</span>
+      <h1>¿Le subieron el precio ayer para fingir un “40% de descuento” hoy?</h1>
+      <p>Pega aquí cualquier enlace de Mercado Libre México (<code>mercadolibre.com.mx</code> o <code>meli.la</code>) de cualquier categoría: herramientas, pantallas, celulares o electrodomésticos. Revisamos el precio real frente a otros vendedores y te damos el enlace limpio.</p>
+      <div class="audit-form">
+        <input type="url" id="meliUrlInput" class="audit-input" placeholder="Pega aquí el link de Mercado Libre (ej. https://www.mercadolibre.com.mx/... o https://meli.la/...)">
+        <button type="button" id="auditBtn" class="audit-btn">🔍 AUDITAR PRECIO REAL</button>
+      </div>
+
+      <div id="auditResult" class="audit-result"></div>
+
+      <div class="share-bar">
+        <span>⚡ Última sincronización del radar: 2026-11-03 18:53 CST</span>
+        <a href="https://wa.me/?text=Antes%20de%20comprar%20en%20Mercado%20Libre%20este%20Buen%20Fin%2C%20pega%20el%20link%20aqu%C3%AD%20para%20revisar%20si%20inflaron%20el%20precio%3A%20https%3A%2F%2Fradar-herramientas-mx.github.io%2F" target="_blank" rel="noopener" class="wa-share">
+          📲 Compartir este Verificador por WhatsApp →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="controls">
+    <div class="sec-title">
+      <div>🔧 Herramientas con Caída Real Verificada Hoy</div>
+      <span>Auditadas contra múltiples vendedores en México</span>
+    </div>
+    <input type="search" id="searchInput" class="search-input" placeholder="Filtrar catálogo auditado por herramienta, marca o categoría (ej. rotomartillo, soldadora, makita, gato, dados)...">
+    <div class="cat-bar" id="catBar">
+      <button class="cat-btn active" data-cat="ALL">Todas (21)</button>
+<button class="cat-btn" data-cat="Electricidad, Plomería y Medición">Electricidad, Plomería y Medición (2)</button>
+<button class="cat-btn" data-cat="Mecánica y Compresores">Mecánica y Compresores (9)</button>
+<button class="cat-btn" data-cat="Perforación y Demolición">Perforación y Demolición (7)</button>
+<button class="cat-btn" data-cat="Soldadura y Herrería">Soldadura y Herrería (3)</button>
+    </div>
+  </section>
+
+  <main class="feed-grid" id="dealsGrid">
+    
+                <article class="deal-card" data-cat="Mecánica y Compresores" data-search="arrancador de batería energyark portátil 8000a con compresor de aire 150 psi y power bank para auto y camioneta mecánica y compresores media hora con el cofre abierto en el estacionamiento del súper y todos te sacan la vuelta">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/arrancador-de-bateria-energyark-portatil-8000a-con-compresor-de-mlm5179014538.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_657872-MLA114733259525_072026-O.jpg" alt="Arrancador de Batería EnergyArk Portátil 8000A con Compresor de Aire 150 PSI y Power Bank para Auto y Camioneta" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-34% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Mecánica y Compresores</span>
+                      <h2><a href="ofertas/arrancador-de-bateria-energyark-portatil-8000a-con-compresor-de-mlm5179014538.html">“Media hora con el cofre abierto en el estacionamiento del súper y todos te sacan la vuelta”</a></h2>
+                      <p class="card-story">Nadie te va a prestar corriente por miedo a quemar la computadora de su coche. Te quedas ahí parado con tus cables en la mano mientras se enfría la despensa. Conectas las pinzas a tu batería muerta, giras la llave en diez segundos y te vas a tu casa sin pedirle favores a nadie.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Arrancador de Batería EnergyArk Portátil 8000A con Compresor de Aire 150 PSI y Power Bank para Auto y Camioneta</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$550 MXN</span>
+                        <span class="p-old">$831</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $281 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/arrancador-de-bateria-energyark-portatil-8000a-con-compresor-de-aire-150-psi-y-power-bank-para-auto-y-camioneta/p/MLM62943906?pdp_filters=item_id:MLM5179014538&amp;matt_tool=80786860&amp;matt_word=mejorahorita#wid=MLM5179014538" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/arrancador-de-bateria-energyark-portatil-8000a-con-compresor-de-mlm5179014538.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Mecánica y Compresores" data-search="hidrolavadora auto drive inalambrica para electrica pinchan mecánica y compresores apretar la manguera con el pulgar solo sirve para mojarte los tenis y dejar el lodo igual">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/hidrolavadora-auto-drive-inalambrica-para-electrica-pinchan-mlm2747912307.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_949517-MLA106794442984_022026-O.jpg" alt="Hidrolavadora Auto Drive Inalambrica Para Electrica Pinchan" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-41% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Mecánica y Compresores</span>
+                      <h2><a href="ofertas/hidrolavadora-auto-drive-inalambrica-para-electrica-pinchan-mlm2747912307.html">“Apretar la manguera con el pulgar solo sirve para mojarte los tenis y dejar el lodo igual”</a></h2>
+                      <p class="card-story">Llevas media mañana aventando cubetazos y cuando se seca el cofre siguen ahí las mismas manchas cenizas. Tallar tolvas y rines con un trapo viejo quita más tiempo que resultados. Metes la manguera de succión en un bote de agua, disparas a presión y en diez minutos entras a desayunar seco.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Hidrolavadora Auto Drive Inalambrica Para Electrica Pinchan</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$258 MXN</span>
+                        <span class="p-old">$438</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $180 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/hidrolavadora-auto-drive-inalambrica-para-electrica-pinchan/p/MLM65850296?pdp_filters=item_id:MLM2747912307&amp;matt_tool=80786860&amp;matt_word=mejorahorita#wid=MLM2747912307" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/hidrolavadora-auto-drive-inalambrica-para-electrica-pinchan-mlm2747912307.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Perforación y Demolición" data-search="rotomartillo inalámbrico adeske htdz-t66 con 2 baterías y accesorios perforación y demolición «vecino, ¿no me presta su taladro cinco minutos?», la frase que más dignidad quita en domingo">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/rotomartillo-inalambrico-adeske-htdz-t66-con-2-baterias-y-mlm3534022424.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_985131-MLA114084841693_072026-O.jpg" alt="Rotomartillo Inalámbrico Adeske HTDZ-T66 con 2 Baterías y Accesorios" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-44% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Perforación y Demolición</span>
+                      <h2><a href="ofertas/rotomartillo-inalambrico-adeske-htdz-t66-con-2-baterias-y-mlm3534022424.html">“«Vecino, ¿no me presta su taladro cinco minutos?», la frase que más dignidad quita en domingo”</a></h2>
+                      <p class="card-story">Sales con tu broca en la mano porque tu taladro viejo nomás chilla contra el tabique y no entra ni medio centímetro. Te hacen tres preguntas incómodas y te vigilan desde la banqueta mientras perforas. Por doscientos cuarenta y tres pesos tienes tu propio maletín en el clóset y haces los hoyos sin darle explicaciones a nadie.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Rotomartillo Inalámbrico Adeske HTDZ-T66 con 2 Baterías y Accesorios</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$243 MXN</span>
+                        <span class="p-old">$430</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $187 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/rotomartillo-inalambrico-adeske-htdz-t66-con-2-baterias-y-accesorios/p/MLM44980209?pdp_filters=item_id:MLM3534022424&amp;matt_tool=80786860&amp;matt_word=mejorahorita#wid=MLM3534022424" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/rotomartillo-inalambrico-adeske-htdz-t66-con-2-baterias-y-mlm3534022424.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Soldadura y Herrería" data-search="soldadora inversora portátil mma/tig inverter 155a wanse 2en1 soldadura y herrería ¿otra vez vas a amarrar la bisagra caída del zaguán con alambre recocido?">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/soldadora-inversora-portatil-mma-tig-inverter-155a-wanse-2en1-mlm4986158720.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_884371-MLA118319427992_102026-O.jpg" alt="Soldadora Inversora Portátil MMA/TIG Inverter 155A WANSE 2en1" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-29% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Soldadura y Herrería</span>
+                      <h2><a href="ofertas/soldadora-inversora-portatil-mma-tig-inverter-155a-wanse-2en1-mlm4986158720.html">“¿Otra vez vas a amarrar la bisagra caída del zaguán con alambre recocido?”</a></h2>
+                      <p class="card-story">«El sábado viene el herrero», le dijiste a tu esposa hace un mes mientras el portón sigue rechinando cada que lo empujas. Quítale ese nudo oxidado que da vergüenza, conecta esta inversora WANSE de 155A al enchufe de casa y echa el punto de soldadura tú mismo por quinientos sesenta y tres pesos.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Soldadora Inversora Portátil MMA/TIG Inverter 155A WANSE 2en1</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$563 MXN</span>
+                        <span class="p-old">$794</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $231 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/soldadora-inversora-portatil-mmatig-inverter-155a-wanse-2en1/p/MLM55893865?pdp_filters=item_id:MLM4986158720&amp;matt_tool=80786860&amp;matt_word=mejorahorita#wid=MLM4986158720" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/soldadora-inversora-portatil-mma-tig-inverter-155a-wanse-2en1-mlm4986158720.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Electricidad, Plomería y Medición" data-search="termofusora adir 7100 kit incluye 3 dados 600w completos electricidad, plomería y medición domingo a las nueve de la noche y el codo debajo del lavabo empieza a escupir agua">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/termofusora-adir-7100-kit-incluye-3-dados-600w-completos-mlm2706394718.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_802407-MLA109739319053_032026-O.jpg" alt="Termofusora Adir 7100 Kit Incluye 3 Dados 600w Completos" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-37% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Electricidad, Plomería y Medición</span>
+                      <h2><a href="ofertas/termofusora-adir-7100-kit-incluye-3-dados-600w-completos-mlm2706394718.html">“Domingo a las nueve de la noche y el codo debajo del lavabo empieza a escupir agua”</a></h2>
+                      <p class="card-story">Terminas cerrando la llave de paso y dejando a toda la familia sin bañarse el lunes porque el plomero no contesta en fin de semana. Guarda este maletín Adir de 600W con sus tres dados para tubo verde, suelda la fuga en cinco minutos y duerme tranquilo por trescientos catorce pesos.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Termofusora Adir 7100 Kit Incluye 3 Dados 600w Completos</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$314 MXN</span>
+                        <span class="p-old">$499</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $185 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/termofusora-adir-7100-kit-incluye-3-dados-600w-completos/p/MLM28363708?pdp_filters=item_id:MLM2706394718&amp;matt_tool=80786860&amp;matt_word=mejorahorita#wid=MLM2706394718" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/termofusora-adir-7100-kit-incluye-3-dados-600w-completos-mlm2706394718.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Mecánica y Compresores" data-search="gato hidráulico de botella soldado capacidad de 5 toneladas mxgaa mecánica y compresores doscientas vueltas a la manivela chueca de agencia mientras dos toneladas de coche se mecen sobre un ladrillo">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/gato-hidraulico-de-botella-soldado-capacidad-de-5-toneladas-mlm5516579378.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_969602-MLA113783316887_062026-O.jpg" alt="Gato Hidráulico De Botella Soldado Capacidad De 5 Toneladas MXGAA" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-50% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Mecánica y Compresores</span>
+                      <h2><a href="ofertas/gato-hidraulico-de-botella-soldado-capacidad-de-5-toneladas-mlm5516579378.html">“Doscientas vueltas a la manivela chueca de agencia mientras dos toneladas de coche se mecen sobre un ladrillo”</a></h2>
+                      <p class="card-story">Cambiar una llanta o revisar balatas confiando en esa tijera de lámina delgada que viene en la cajuela es tentar a la suerte. Si vas a meter las manos debajo del chasis, más vale que descanse sobre un pistón hidráulico de cinco toneladas. Tres bombeos con la palanca y el carro sube firme sin crujir.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Gato Hidráulico De Botella Soldado Capacidad De 5 Toneladas MXGAA</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$266 MXN</span>
+                        <span class="p-old">$536</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $270 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/gato-hidraulico-de-botella-soldado-capacidad-de-5-toneladas-mxgaa/p/MLM28468678?pdp_filters=item_id:MLM5516579378&amp;matt_tool=80786860&amp;matt_word=mejorahorita#wid=MLM5516579378" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/gato-hidraulico-de-botella-soldado-capacidad-de-5-toneladas-mlm5516579378.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Perforación y Demolición" data-search="taladro rotomartillo makita dhp490wve 1/2  +brocas+powerbank azul petróleo 0 perforación y demolición cuatro hoyos chuecos en la pared porque tu taladro viejo rebota cuando toca concreto">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/taladro-rotomartillo-makita-dhp490wve-1-2-brocas-powerbank-azul-mlm6209271400.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_784300-MLM117919051487_092026-O.jpg" alt="Taladro Rotomartillo Makita Dhp490wve 1/2  +brocas+powerbank Azul Petróleo 0" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-29% REAL</span>
+                        <span class="b-best">🏆 MÁS VENDIDO</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Perforación y Demolición</span>
+                      <h2><a href="ofertas/taladro-rotomartillo-makita-dhp490wve-1-2-brocas-powerbank-azul-mlm6209271400.html">“Cuatro hoyos chuecos en la pared porque tu taladro viejo rebota cuando toca concreto”</a></h2>
+                      <p class="card-story">Rellenas el desastre con taquetes de madera astillada esperando que la repisa no se caiga a media noche. Mejor mete un Makita inalámbrico de media pulgada que perfore tabique de verdad. Trae sus propias brocas, un powerbank y mil cien pesos de descuento directo para que dejes de hacer cráteres.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Taladro Rotomartillo Makita Dhp490wve 1/2  +brocas+powerbank Azul Petróleo 0</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$2,699 MXN</span>
+                        <span class="p-old">$3,796</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $1,097 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/taladro-rotomartillo-makita-dhp490wve-12--brocaspowerbank/up/MLMU5140683635?pdp_filters=item_id:MLM6209271400&amp;matt_tool=80786860&amp;matt_word=mejorahorita#wid=MLM6209271400" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/taladro-rotomartillo-makita-dhp490wve-1-2-brocas-powerbank-azul-mlm6209271400.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Mecánica y Compresores" data-search="hidrolavadora electrica portátil 1600 psi 1200w alta presion amarillo 60hz trent para lavar carros mecánica y compresores tallar el musgo del patio con una escoba vieja te deja la espalda molida y el piso igual de negro">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/hidrolavadora-electrica-portatil-1600-psi-1200w-alta-presion-amarillo-mlm1932698151.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_947804-MLA110085183161_042026-O.jpg" alt="Hidrolavadora Electrica Portátil 1600 Psi 1200w Alta Presion Amarillo 60hz Trent Para Lavar Carros" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-30% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Mecánica y Compresores</span>
+                      <h2><a href="ofertas/hidrolavadora-electrica-portatil-1600-psi-1200w-alta-presion-amarillo-mlm1932698151.html">“Tallar el musgo del patio con una escoba vieja te deja la espalda molida y el piso igual de negro”</a></h2>
+                      <p class="card-story">Pasar el domingo barriendo charcos de jabón en la cochera es la forma más absurda de perder tu día libre. Enchufas los mil seiscientos PSI de presión, barres la mugre incrustada del cemento de una sola pasada y te sobra toda la tarde para no hacer absolutamente nada.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Hidrolavadora Electrica Portátil 1600 Psi 1200w Alta Presion Amarillo 60hz Trent Para Lavar Carros</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$958 MXN</span>
+                        <span class="p-old">$1,374</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $416 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/hidrolavadora-electrica-portatil-1600-psi-1200w-alta-presion-amarillo-60hz-trent-para-lavar-carros/p/MLM53177027?pdp_filters=item_id:MLM1932698151&amp;matt_tool=80786860&amp;matt_word=mejorahorita#wid=MLM1932698151" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/hidrolavadora-electrica-portatil-1600-psi-1200w-alta-presion-amarillo-mlm1932698151.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Perforación y Demolición" data-search="193 kit discos corte sierra hss para dremel mototool taladro perforación y demolición tienes un mototool guardado agarrando polvo porque ya te acabaste los discos que traía la caja">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/193-kit-discos-corte-sierra-hss-para-dremel-mototool-mlm2254911851.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_632561-MLM102590707802_122025-O.jpg" alt="193 Kit Discos Corte Sierra Hss Para Dremel Mototool Taladro" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-36% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Perforación y Demolición</span>
+                      <h2><a href="ofertas/193-kit-discos-corte-sierra-hss-para-dremel-mototool-mlm2254911851.html">“Tienes un mototool guardado agarrando polvo porque ya te acabaste los discos que traía la caja”</a></h2>
+                      <p class="card-story">Y como te da codo ir a la ferretería donde te venden una sola pieza al precio de tres, terminas cortando plástico con un cuchillo caliente en la estufa. Por menos de doscientos pesos rellenas el estuche para un buen rato y dejas de hacer chapuzas de secundaria.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 193 Kit Discos Corte Sierra Hss Para Dremel Mototool Taladro</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$192 MXN</span>
+                        <span class="p-old">$298</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $106 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/193-kit-discos-corte-sierra-hss-para-dremel-mototool-taladro/up/MLMU3056331869?pdp_filters=item_id:MLM2254911851&amp;matt_tool=80786860&amp;matt_word=mejorahorita#wid=MLM2254911851" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/193-kit-discos-corte-sierra-hss-para-dremel-mototool-mlm2254911851.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Soldadura y Herrería" data-search="mini soldadora inverter maquina soldar inverter amarillo mma y tig 2 en 1 con pantalla digital pinchan soldadura y herrería «ahorita queda con alambre recocido», dijiste hace seis meses mientras amarrabas la reja caída">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/mini-soldadora-inverter-maquina-soldar-inverter-amarillo-mma-y-mlm3558862695.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_713600-MLA111939981918_062026-O.jpg" alt="Mini soldadora inverter Maquina Soldar Inverter amarillo MMA y TIG 2 en 1 con Pantalla Digital PINCHAN" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-49% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Soldadura y Herrería</span>
+                      <h2><a href="ofertas/mini-soldadora-inverter-maquina-soldar-inverter-amarillo-mma-y-mlm3558862695.html">“«Ahorita queda con alambre recocido», dijiste hace seis meses mientras amarrabas la reja caída”</a></h2>
+                      <p class="card-story">¿De verdad vas a seguir rogándole al herrero de la cuadra para que nunca venga por dos puntos de soldadura? Suelda tú mismo con electrodo o TIG conectando directo a cualquier contacto de casa sin botar la pastilla. Pesa menos que una mochila y hoy baja de ochocientos a cuatrocientos once pesos.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Mini soldadora inverter Maquina Soldar Inverter amarillo MMA y TIG 2 en 1 con Pantalla Digital PINCHAN</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$411 MXN</span>
+                        <span class="p-old">$803</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $392 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/mini-soldadora-inverter-maquina-soldar-inverter-amarillo-mma-y-tig-2-en-1-con-pantalla-digital-pinchan/p/MLM67689331?pdp_filters=item_id:MLM3558862695&amp;matt_tool=80786860&amp;matt_word=mejorahorita#wid=MLM3558862695" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/mini-soldadora-inverter-maquina-soldar-inverter-amarillo-mma-y-mlm3558862695.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Perforación y Demolición" data-search="kit herramientas de precisión con 98 puntas desarmadores intercambiables simuky t115 perforación y demolición usar un cuchillo de cocina para sacar tornillos miniatura siempre sale caro">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/kit-herramientas-de-precision-con-98-puntas-desarmadores-intercambiables-mlm5881061934.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_878867-MLA108298220798_032026-O.jpg" alt="Kit Herramientas de Precisión con 98 Puntas Desarmadores Intercambiables SIMUKY T115" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-50% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Perforación y Demolición</span>
+                      <h2><a href="ofertas/kit-herramientas-de-precision-con-98-puntas-desarmadores-intercambiables-mlm5881061934.html">“Usar un cuchillo de cocina para sacar tornillos miniatura siempre sale caro”</a></h2>
+                      <p class="card-story">Empiezas queriendo limpiar el control de la consola o cambiarle la pila al juguete de tu hijo, y terminas con el plástico mordido y el tornillo barrido porque no tenías la punta exacta. Cuesta menos que dos cervezas y te ahorra pagarle $500 al técnico del centro por abrir una tapa.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Kit Herramientas de Precisión con 98 Puntas Desarmadores Intercambiables SIMUKY T115</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$114 MXN</span>
+                        <span class="p-old">$228</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $114 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/kit-herramientas-de-precision-con-98-puntas-desarmadores-intercambiables-simuky-t115/p/MLM47674211?pdp_filters=item_id:MLM5881061934&amp;matt_tool=80786860&amp;matt_word=mejorahorita#wid=MLM5881061934" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/kit-herramientas-de-precision-con-98-puntas-desarmadores-intercambiables-mlm5881061934.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Mecánica y Compresores" data-search="gato hidraulico de patin 3 toneladas automotriz kong mecánica y compresores guarda ya ese tabique despostillado con el que calzas la camioneta cada vez que le cambias el aceite">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/gato-hidraulico-de-patin-3-toneladas-automotriz-kong-mlm3573694448.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_830591-MLA99442204286_112025-O.jpg" alt="Gato Hidraulico De Patin 3 Toneladas Automotriz Kong" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-23% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Mecánica y Compresores</span>
+                      <h2><a href="ofertas/gato-hidraulico-de-patin-3-toneladas-automotriz-kong-mlm3573694448.html">“Guarda ya ese tabique despostillado con el que calzas la camioneta cada vez que le cambias el aceite”</a></h2>
+                      <p class="card-story">Si te gusta meter la cabeza debajo del cárter rezando para que no truene la madera, sigue igual. Para trabajar sin jugártela en la cochera, este gato de patín Kong levanta tres toneladas reales sin tambalearse. En otros lados ronda los $2,399, pero aquí te lo llevas en $1,842.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Gato Hidraulico De Patin 3 Toneladas Automotriz Kong</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$1,842 MXN</span>
+                        <span class="p-old">$2,399</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $557 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/gato-hidraulico-de-patin-3-toneladas-automotriz-kong/p/MLM46351509?pdp_filters=item_id:MLM3573694448&amp;matt_tool=80786860&amp;matt_word=mejorahorita#wid=MLM3573694448" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/gato-hidraulico-de-patin-3-toneladas-automotriz-kong-mlm3573694448.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Mecánica y Compresores" data-search="hidrolavadora inalámbrica electrica hirlan yn01 pistola para lavado autos portatil color negro mecánica y compresores dos idas al autolavado cuestan más que esta pistola y encima te rayan la pintura">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/hidrolavadora-inalambrica-electrica-hirlan-yn01-pistola-para-lavado-autos-mlm2305625685.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_915645-MLA118968220969_102026-O.jpg" alt="Hidrolavadora Inalámbrica Electrica HIRLAN YN01 Pistola Para Lavado Autos Portatil color negro" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-32% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Mecánica y Compresores</span>
+                      <h2><a href="ofertas/hidrolavadora-inalambrica-electrica-hirlan-yn01-pistola-para-lavado-autos-mlm2305625685.html">“Dos idas al autolavado cuestan más que esta pistola y encima te rayan la pintura”</a></h2>
+                      <p class="card-story">Haces fila media hora un domingo para que le pasen un trapo lleno de tierra a tu coche y te cobren $150 pesos. Si intentas lavarlo tú poniendo el dedo en la manguera, solo embarras el lodo y terminas empapado. Por menos de dos lavadas tienes tu propio equipo en la cajuela.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Hidrolavadora Inalámbrica Electrica HIRLAN YN01 Pistola Para Lavado Autos Portatil color negro</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$296 MXN</span>
+                        <span class="p-old">$435</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $139 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/hidrolavadora-inalambrica-electrica-hirlan-yn01-pistola-para-lavado-autos-portatil-color-negro/p/MLM47700596?pdp_filters=item_id:MLM2305625685&amp;matt_tool=80786860&amp;matt_word=mejorahorita#wid=MLM2305625685" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/hidrolavadora-inalambrica-electrica-hirlan-yn01-pistola-para-lavado-autos-mlm2305625685.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Perforación y Demolición" data-search="kit de taladros rotomartillos inalámbricos 3 en 1 función impacto 2 baterías y kit completo de accesorios perforación y demolición pedirle el rotomartillo a tu cuñado en domingo siempre te cuesta un favor caro">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/kit-de-taladros-rotomartillos-inalambricos-3-en-1-funcion-mlm2809474623.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_802609-MLA119970537471_102026-O.jpg" alt="Kit De Taladros Rotomartillos Inalámbricos 3 En 1 Función Impacto 2 Baterías Y Kit Completo De Accesorios" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-39% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Perforación y Demolición</span>
+                      <h2><a href="ofertas/kit-de-taladros-rotomartillos-inalambricos-3-en-1-funcion-mlm2809474623.html">“Pedirle el rotomartillo a tu cuñado en domingo siempre te cuesta un favor caro”</a></h2>
+                      <p class="card-story">Tocarle la puerta al vecino para que te preste con qué colgar una repisa es humillante, y encima te da una broca sin filo que solo rasca el yeso. Por doscientos setenta pesos tienes tu propio maletín en el clóset, perforas el muro de concreto sin depender de extensiones y nadie te anda cobrando favores después.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Kit De Taladros Rotomartillos Inalámbricos 3 En 1 Función Impacto 2 Baterías Y Kit Completo De Accesorios</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$269 MXN</span>
+                        <span class="p-old">$440</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $171 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/kit-de-taladros-rotomartillos-inalambricos-3-en-1-funcion-impacto-2-baterias-y-kit-completo-de-accesorios/p/MLM64358647?pdp_filters=item_id:MLM2809474623&amp;matt_tool=80786860&amp;matt_word=mejorahorita#wid=MLM2809474623" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/kit-de-taladros-rotomartillos-inalambricos-3-en-1-funcion-mlm2809474623.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Perforación y Demolición" data-search="taladro cincelador juego esmeriladora inalambrica perforación y demolición abrir una ranura a cincel y maceta un domingo por la tarde">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/taladro-cincelador-juego-esmeriladora-inalambrica-mlm5880290356.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_902300-MLA114184997978_082026-O.jpg" alt="Taladro Cincelador Juego Esmeriladora Inalambrica" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-45% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Perforación y Demolición</span>
+                      <h2><a href="ofertas/taladro-cincelador-juego-esmeriladora-inalambrica-mlm5880290356.html">“Abrir una ranura a cincel y maceta un domingo por la tarde”</a></h2>
+                      <p class="card-story">Llevas dos horas dándole golpes al muro para meter un tubo y apenas le hiciste cosquillas al cemento. El albañil te cobra mil pesos por hacer esa zanja y cortar dos varillas en diez minutos, pero no por su fuerza, sino porque trae máquina. Deja de dejarte las muñecas con la segueta y hazte de tu propio equipo a mitad de precio.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Taladro Cincelador Juego Esmeriladora Inalambrica</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$847 MXN</span>
+                        <span class="p-old">$1,541</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $694 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/taladro-cincelador-juego-esmeriladora-inalambrica/p/MLM76222815?pdp_filters=item_id:MLM5880290356&amp;matt_tool=80786860&amp;matt_word=mejorahorita#wid=MLM5880290356" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/taladro-cincelador-juego-esmeriladora-inalambrica-mlm5880290356.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Mecánica y Compresores" data-search="compresor de aire eléctrico portátil foreman fo50l 50l 3hp mecánica y compresores pintar el portón a brochazos es garantía de que quede escurrido y con pelos pegados">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/compresor-de-aire-electrico-portatil-foreman-fo50l-50l-3hp-mlm4832140288.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_824714-MLA115113473124_082026-O.jpg" alt="Compresor De Aire Eléctrico Portátil Foreman FO50L 50L 3hp" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-26% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Mecánica y Compresores</span>
+                      <h2><a href="ofertas/compresor-de-aire-electrico-portatil-foreman-fo50l-50l-3hp-mlm4832140288.html">“Pintar el portón a brochazos es garantía de que quede escurrido y con pelos pegados”</a></h2>
+                      <p class="card-story">Llevas seis meses diciendo que vas a pintar la herrería de la fachada, pero nomás de acordarte de lo tardado que es darle con brocha, mejor te haces tonto. Teniendo cincuenta litros de presión en la cochera acabas en veinte minutos, sopleteas el polvo del taller y dejas de ir a la gasolinera a mendigar aire para las llantas.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Compresor De Aire Eléctrico Portátil Foreman FO50L 50L 3hp</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$2,499 MXN</span>
+                        <span class="p-old">$3,371</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $872 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/compresor-de-aire-electrico-portatil-foreman-fo50l-50l-3hp/p/MLM28606339?pdp_filters=item_id:MLM4832140288&amp;matt_tool=80786860&amp;matt_word=mejorahorita#wid=MLM4832140288" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/compresor-de-aire-electrico-portatil-foreman-fo50l-50l-3hp-mlm4832140288.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Electricidad, Plomería y Medición" data-search="soarfly kit de termofusora herramientas 1000w para tubos electricidad, plomería y medición ¿cuántas vueltas más de cinta teflón piensas darle a ese tubo verde antes de aceptar que el plástico no se pega con rezos?">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/soarfly-kit-de-termofusora-herramientas-1000w-para-tubos-mlm4636039438.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_610671-MLA104015240555_012026-O.jpg" alt="Soarfly Kit De Termofusora Herramientas 1000w Para Tubos" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-21% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Electricidad, Plomería y Medición</span>
+                      <h2><a href="ofertas/soarfly-kit-de-termofusora-herramientas-1000w-para-tubos-mlm4636039438.html">“¿Cuántas vueltas más de cinta teflón piensas darle a ese tubo verde antes de aceptar que el plástico no se pega con rezos?”</a></h2>
+                      <p class="card-story">Sábado a las ocho de la noche y tienes cubetas abajo del fregadero porque la unión que remendaste con silicón ya reventó. Conectas esta termofusora de 1000W, fundes el tubo en diez segundos y te ahorras los mil pesos que cobra el plomero por dejarte plantado.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Soarfly Kit De Termofusora Herramientas 1000w Para Tubos</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$275 MXN</span>
+                        <span class="p-old">$349</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $74 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/soarfly-kit-de-termofusora-herramientas-1000w-para-tubos/p/MLM63969255?pdp_filters=item_id:MLM4636039438#wid=MLM4636039438" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/soarfly-kit-de-termofusora-herramientas-1000w-para-tubos-mlm4636039438.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Mecánica y Compresores" data-search="juego de herramientas mecánicas autocle dados acerokit 46pcs mecánica y compresores hasta que no barres un tornillo debajo del tablero no entiendes por qué estorbaban las pinzas perras">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/juego-de-herramientas-mecanicas-autocle-dados-acerokit-46pcs-mlm2653307131.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_660460-MLA99600565354_122025-O.jpg" alt="Juego De Herramientas Mecánicas Autocle Dados Acerokit 46pcs" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-30% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Mecánica y Compresores</span>
+                      <h2><a href="ofertas/juego-de-herramientas-mecanicas-autocle-dados-acerokit-46pcs-mlm2653307131.html">“Hasta que no barres un tornillo debajo del tablero no entiendes por qué estorbaban las pinzas perras”</a></h2>
+                      <p class="card-story">Intentaste apretar la abrazadera de la batería o sacar el filtro de aire usando un perico flojo, te rasgaste los nudillos contra el radiador y la tuerca quedó redonda. Traer este maletín de 46 piezas con matraca, extensiones y dados exactos en la cajuela cuesta 166 pesos; menos que un Uber cuando te quedas tirado.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Juego De Herramientas Mecánicas Autocle Dados Acerokit 46pcs</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$166 MXN</span>
+                        <span class="p-old">$237</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $71 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/juego-de-herramientas-mecanicas-autocle-dados-acerokit-46pcs/p/MLM41774135?pdp_filters=item_id:MLM2653307131#wid=MLM2653307131" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/juego-de-herramientas-mecanicas-autocle-dados-acerokit-46pcs-mlm2653307131.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Mecánica y Compresores" data-search="juego de 46 piezas herramientas mecánicas - dados acero s2 rojo mecánica y compresores aflojar tuercas al tanteo con unas pinzas oxidadas siempre termina con los nudillos raspados">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/juego-de-46-piezas-herramientas-mecanicas-dados-acero-s2-mlm2627583849.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_988753-MLM115051203211_072026-O.jpg" alt="Juego De 46 Piezas Herramientas Mecánicas - Dados Acero S2 Rojo" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-35% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Mecánica y Compresores</span>
+                      <h2><a href="ofertas/juego-de-46-piezas-herramientas-mecanicas-dados-acero-s2-mlm2627583849.html">“Aflojar tuercas al tanteo con unas pinzas oxidadas siempre termina con los nudillos raspados”</a></h2>
+                      <p class="card-story">Un ajuste de cinco minutos se vuelve un coraje de tres horas cuando barres las esquinas del tornillo por no tener el dado de la medida exacta. Abres el estuche, encajas la matraca correcta a la primera y sacas el trabajo limpio sin dejar el metal mordido.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Juego De 46 Piezas Herramientas Mecánicas - Dados Acero S2 Rojo</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$118 MXN</span>
+                        <span class="p-old">$181</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $63 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/juego-de-46-piezas-herramientas-mecanicas--dados-acero-s2/up/MLMU3687276346?pdp_filters=item_id:MLM2627583849#wid=MLM2627583849" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/juego-de-46-piezas-herramientas-mecanicas-dados-acero-s2-mlm2627583849.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Soldadura y Herrería" data-search="esmeril de banco 5 pulgadas 120w 3500 rpm adir 906 soldadura y herrería quemaste un motor de dos mil pesos porque tu broca no tenía filo">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/esmeril-de-banco-5-pulgadas-120w-3500-rpm-adir-mlm1588450970.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_708847-MLA99446194114_112025-O.jpg" alt="Esmeril De Banco 5 Pulgadas 120W 3500 RPM Adir 906" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-35% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Soldadura y Herrería</span>
+                      <h2><a href="ofertas/esmeril-de-banco-5-pulgadas-120w-3500-rpm-adir-mlm1588450970.html">“Quemaste un motor de dos mil pesos porque tu broca no tenía filo”</a></h2>
+                      <p class="card-story">Te avientas media hora recargándole todo tu peso al taladro y echando humo porque te da flojera afilar una broca o quitarle la rebaba a un corte con lima de mano. Por menos de seiscientos pesos dejas de forzar tu equipo y de comprar consumibles nuevos cada que haces una chamba.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Esmeril De Banco 5 Pulgadas 120W 3500 RPM Adir 906</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$586 MXN</span>
+                        <span class="p-old">$899</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $313 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/esmeril-de-banco-5-pulgadas-120w-3500-rpm-adir-906/p/MLM16090341?pdp_filters=item_id:MLM1588450970#wid=MLM1588450970" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/esmeril-de-banco-5-pulgadas-120w-3500-rpm-adir-mlm1588450970.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+
+                <article class="deal-card" data-cat="Perforación y Demolición" data-search="kit de taladro inalámbrico destornillador eléctrico azul pinchan 2000 rpm incluye batería y cargador iluminación led 50 hz/60 hz perforación y demolición «ahorita armo el mueble con el desarmador de mano», dijiste antes de sacarte tres ampollas en la palma">
+                  <div class="card-top">
+                    <div class="card-img-wrap">
+                      <a href="ofertas/kit-de-taladro-inalambrico-destornillador-electrico-azul-pinchan-2000-mlm6237782412.html">
+                        <img src="https://http2.mlstatic.com/D_Q_NP_2X_673472-MLA113181518332_072026-O.jpg" alt="Kit De Taladro Inalámbrico Destornillador Eléctrico Azul Pinchan 2000 RPM Incluye batería y cargador Iluminación LED 50 Hz/60 Hz" loading="lazy">
+                      </a>
+                      <div class="card-badges">
+                        <span class="b-disc">-36% REAL</span>
+                        <span class="b-full">⚡ FULL</span>
+                      </div>
+                    </div>
+                    <div class="card-meta">
+                      <span class="card-cat">Perforación y Demolición</span>
+                      <h2><a href="ofertas/kit-de-taladro-inalambrico-destornillador-electrico-azul-pinchan-2000-mlm6237782412.html">“«Ahorita armo el mueble con el desarmador de mano», dijiste antes de sacarte tres ampollas en la palma”</a></h2>
+                      <p class="card-story">Cuarenta tornillos después tienes la muñeca dormida, las repisas chuecas y ganas de patear la caja. Por 201 pesos metes las pijas a dos mil revoluciones, alumbras adentro del gabinete sin morder la lámpara del celular y jubilas ese mango de plástico barrido que nomás te pela los dedos.</p>
+                    </div>
+                  </div>
+
+                  <div class="card-product-name">📦 Kit De Taladro Inalámbrico Destornillador Eléctrico Azul Pinchan 2000 RPM Incluye batería y cargador Iluminación LED 50 Hz/60 Hz</div>
+
+                  <div class="card-bottom">
+                    <div class="price-block">
+                      <div class="p-line">
+                        <span class="p-now">$201 MXN</span>
+                        <span class="p-old">$314</span>
+                      </div>
+                      <div class="p-audit">Te ahorras $113 MXN hoy</div>
+                    </div>
+                    <div class="cta-block">
+                      <a href="https://www.mercadolibre.com.mx/kit-de-taladro-inalambrico-destornillador-electrico-azul-pinchan-2000-rpm-incluye-bateria-y-cargador-iluminacion-led-50-hz60-hz/p/MLM73232480?pdp_filters=item_id:MLM6237782412#wid=MLM6237782412" target="_blank" rel="nofollow sponsored noopener" class="btn-meli">
+                        VER EN MERCADO LIBRE →
+                      </a>
+                      <a href="ofertas/kit-de-taladro-inalambrico-destornillador-electrico-azul-pinchan-2000-mlm6237782412.html" class="btn-detail">Ver detalle de la oferta</a>
+                    </div>
+                  </div>
+                </article>
+                
+  </main>
+
+  <footer>
+    <p><strong>⚠️ Advertencia de Taller:</strong> Este portal provoca compra compulsiva de herramientas que juras usar el fin de semana. Cero garantías contra reclamos en casa cuando llegue la camioneta amarilla de reparto.</p>
+    <br>
+    <p><strong>Aviso Legal y de Afiliación:</strong> Radar de Herramientas MX es un comparador y verificador independiente de precios en México. Participamos en el Programa de Afiliados de Mercado Libre México (código MEJORAHORITA); podemos recibir una comisión por compras calificadas realizadas a través de nuestros enlaces sin ningún costo adicional para ti. Los precios y existencias se auditan en tiempo real pero pueden variar sin previo aviso dentro de la plataforma. No somos el sitio oficial de Mercado Libre ni estamos avalados por dicha marca. • <a href="rss.xml" style="color:#8b949e;">Feed RSS Oficial</a> • <a href="sitemap.xml" style="color:#8b949e;">Sitemap XML</a></p>
+  </footer>
+
+  <script>
+    const AUDITED_DB = [{"id": "MLM5179014538", "title": "Arrancador de Batería EnergyArk Portátil 8000A con Compresor de Aire 150 PSI y Power Bank para Auto y Camioneta", "price": 550.0, "ref_price": 831.25, "disc": 33.8, "url": "https://www.mercadolibre.com.mx/arrancador-de-bateria-energyark-portatil-8000a-con-compresor-de-aire-150-psi-y-power-bank-para-auto-y-camioneta/p/MLM62943906?pdp_filters=item_id:MLM5179014538&matt_tool=80786860&matt_word=mejorahorita#wid=MLM5179014538", "img": "https://http2.mlstatic.com/D_Q_NP_2X_657872-MLA114733259525_072026-O.jpg", "headline": "Media hora con el cofre abierto en el estacionamiento del súper y todos te sacan la vuelta"}, {"id": "MLM2747912307", "title": "Hidrolavadora Auto Drive Inalambrica Para Electrica Pinchan", "price": 258.0, "ref_price": 437.57, "disc": 41.0, "url": "https://www.mercadolibre.com.mx/hidrolavadora-auto-drive-inalambrica-para-electrica-pinchan/p/MLM65850296?pdp_filters=item_id:MLM2747912307&matt_tool=80786860&matt_word=mejorahorita#wid=MLM2747912307", "img": "https://http2.mlstatic.com/D_Q_NP_2X_949517-MLA106794442984_022026-O.jpg", "headline": "Apretar la manguera con el pulgar solo sirve para mojarte los tenis y dejar el lodo igual"}, {"id": "MLM3534022424", "title": "Rotomartillo Inalámbrico Adeske HTDZ-T66 con 2 Baterías y Accesorios", "price": 243.0, "ref_price": 430.1, "disc": 43.5, "url": "https://www.mercadolibre.com.mx/rotomartillo-inalambrico-adeske-htdz-t66-con-2-baterias-y-accesorios/p/MLM44980209?pdp_filters=item_id:MLM3534022424&matt_tool=80786860&matt_word=mejorahorita#wid=MLM3534022424", "img": "https://http2.mlstatic.com/D_Q_NP_2X_985131-MLA114084841693_072026-O.jpg", "headline": "«Vecino, ¿no me presta su taladro cinco minutos?», la frase que más dignidad quita en domingo"}, {"id": "MLM4986158720", "title": "Soldadora Inversora Portátil MMA/TIG Inverter 155A WANSE 2en1", "price": 563.0, "ref_price": 794.07, "disc": 29.1, "url": "https://www.mercadolibre.com.mx/soldadora-inversora-portatil-mmatig-inverter-155a-wanse-2en1/p/MLM55893865?pdp_filters=item_id:MLM4986158720&matt_tool=80786860&matt_word=mejorahorita#wid=MLM4986158720", "img": "https://http2.mlstatic.com/D_Q_NP_2X_884371-MLA118319427992_102026-O.jpg", "headline": "¿Otra vez vas a amarrar la bisagra caída del zaguán con alambre recocido?"}, {"id": "MLM2706394718", "title": "Termofusora Adir 7100 Kit Incluye 3 Dados 600w Completos", "price": 314.0, "ref_price": 499.0, "disc": 37.1, "url": "https://www.mercadolibre.com.mx/termofusora-adir-7100-kit-incluye-3-dados-600w-completos/p/MLM28363708?pdp_filters=item_id:MLM2706394718&matt_tool=80786860&matt_word=mejorahorita#wid=MLM2706394718", "img": "https://http2.mlstatic.com/D_Q_NP_2X_802407-MLA109739319053_032026-O.jpg", "headline": "Domingo a las nueve de la noche y el codo debajo del lavabo empieza a escupir agua"}, {"id": "MLM5516579378", "title": "Gato Hidráulico De Botella Soldado Capacidad De 5 Toneladas MXGAA", "price": 266.0, "ref_price": 535.9, "disc": 50.4, "url": "https://www.mercadolibre.com.mx/gato-hidraulico-de-botella-soldado-capacidad-de-5-toneladas-mxgaa/p/MLM28468678?pdp_filters=item_id:MLM5516579378&matt_tool=80786860&matt_word=mejorahorita#wid=MLM5516579378", "img": "https://http2.mlstatic.com/D_Q_NP_2X_969602-MLA113783316887_062026-O.jpg", "headline": "Doscientas vueltas a la manivela chueca de agencia mientras dos toneladas de coche se mecen sobre un ladrillo"}, {"id": "MLM6209271400", "title": "Taladro Rotomartillo Makita Dhp490wve 1/2  +brocas+powerbank Azul Petróleo 0", "price": 2699.1, "ref_price": 3796.0, "disc": 28.9, "url": "https://www.mercadolibre.com.mx/taladro-rotomartillo-makita-dhp490wve-12--brocaspowerbank/up/MLMU5140683635?pdp_filters=item_id:MLM6209271400&matt_tool=80786860&matt_word=mejorahorita#wid=MLM6209271400", "img": "https://http2.mlstatic.com/D_Q_NP_2X_784300-MLM117919051487_092026-O.jpg", "headline": "Cuatro hoyos chuecos en la pared porque tu taladro viejo rebota cuando toca concreto"}, {"id": "MLM1932698151", "title": "Hidrolavadora Electrica Portátil 1600 Psi 1200w Alta Presion Amarillo 60hz Trent Para Lavar Carros", "price": 958.0, "ref_price": 1373.75, "disc": 30.3, "url": "https://www.mercadolibre.com.mx/hidrolavadora-electrica-portatil-1600-psi-1200w-alta-presion-amarillo-60hz-trent-para-lavar-carros/p/MLM53177027?pdp_filters=item_id:MLM1932698151&matt_tool=80786860&matt_word=mejorahorita#wid=MLM1932698151", "img": "https://http2.mlstatic.com/D_Q_NP_2X_947804-MLA110085183161_042026-O.jpg", "headline": "Tallar el musgo del patio con una escoba vieja te deja la espalda molida y el piso igual de negro"}, {"id": "MLM2254911851", "title": "193 Kit Discos Corte Sierra Hss Para Dremel Mototool Taladro", "price": 192.0, "ref_price": 298.0, "disc": 35.6, "url": "https://www.mercadolibre.com.mx/193-kit-discos-corte-sierra-hss-para-dremel-mototool-taladro/up/MLMU3056331869?pdp_filters=item_id:MLM2254911851&matt_tool=80786860&matt_word=mejorahorita#wid=MLM2254911851", "img": "https://http2.mlstatic.com/D_Q_NP_2X_632561-MLM102590707802_122025-O.jpg", "headline": "Tienes un mototool guardado agarrando polvo porque ya te acabaste los discos que traía la caja"}, {"id": "MLM3558862695", "title": "Mini soldadora inverter Maquina Soldar Inverter amarillo MMA y TIG 2 en 1 con Pantalla Digital PINCHAN", "price": 410.92, "ref_price": 802.7, "disc": 48.8, "url": "https://www.mercadolibre.com.mx/mini-soldadora-inverter-maquina-soldar-inverter-amarillo-mma-y-tig-2-en-1-con-pantalla-digital-pinchan/p/MLM67689331?pdp_filters=item_id:MLM3558862695&matt_tool=80786860&matt_word=mejorahorita#wid=MLM3558862695", "img": "https://http2.mlstatic.com/D_Q_NP_2X_713600-MLA111939981918_062026-O.jpg", "headline": "«Ahorita queda con alambre recocido», dijiste hace seis meses mientras amarrabas la reja caída"}, {"id": "MLM5881061934", "title": "Kit Herramientas de Precisión con 98 Puntas Desarmadores Intercambiables SIMUKY T115", "price": 114.0, "ref_price": 228.0, "disc": 50.0, "url": "https://www.mercadolibre.com.mx/kit-herramientas-de-precision-con-98-puntas-desarmadores-intercambiables-simuky-t115/p/MLM47674211?pdp_filters=item_id:MLM5881061934&matt_tool=80786860&matt_word=mejorahorita#wid=MLM5881061934", "img": "https://http2.mlstatic.com/D_Q_NP_2X_878867-MLA108298220798_032026-O.jpg", "headline": "Usar un cuchillo de cocina para sacar tornillos miniatura siempre sale caro"}, {"id": "MLM3573694448", "title": "Gato Hidraulico De Patin 3 Toneladas Automotriz Kong", "price": 1842.0, "ref_price": 2399.0, "disc": 23.2, "url": "https://www.mercadolibre.com.mx/gato-hidraulico-de-patin-3-toneladas-automotriz-kong/p/MLM46351509?pdp_filters=item_id:MLM3573694448&matt_tool=80786860&matt_word=mejorahorita#wid=MLM3573694448", "img": "https://http2.mlstatic.com/D_Q_NP_2X_830591-MLA99442204286_112025-O.jpg", "headline": "Guarda ya ese tabique despostillado con el que calzas la camioneta cada vez que le cambias el aceite"}, {"id": "MLM2305625685", "title": "Hidrolavadora Inalámbrica Electrica HIRLAN YN01 Pistola Para Lavado Autos Portatil color negro", "price": 296.0, "ref_price": 434.7, "disc": 31.9, "url": "https://www.mercadolibre.com.mx/hidrolavadora-inalambrica-electrica-hirlan-yn01-pistola-para-lavado-autos-portatil-color-negro/p/MLM47700596?pdp_filters=item_id:MLM2305625685&matt_tool=80786860&matt_word=mejorahorita#wid=MLM2305625685", "img": "https://http2.mlstatic.com/D_Q_NP_2X_915645-MLA118968220969_102026-O.jpg", "headline": "Dos idas al autolavado cuestan más que esta pistola y encima te rayan la pintura"}, {"id": "MLM2809474623", "title": "Kit De Taladros Rotomartillos Inalámbricos 3 En 1 Función Impacto 2 Baterías Y Kit Completo De Accesorios", "price": 269.0, "ref_price": 440.45, "disc": 38.9, "url": "https://www.mercadolibre.com.mx/kit-de-taladros-rotomartillos-inalambricos-3-en-1-funcion-impacto-2-baterias-y-kit-completo-de-accesorios/p/MLM64358647?pdp_filters=item_id:MLM2809474623&matt_tool=80786860&matt_word=mejorahorita#wid=MLM2809474623", "img": "https://http2.mlstatic.com/D_Q_NP_2X_802609-MLA119970537471_102026-O.jpg", "headline": "Pedirle el rotomartillo a tu cuñado en domingo siempre te cuesta un favor caro"}, {"id": "MLM5880290356", "title": "Taladro Cincelador Juego Esmeriladora Inalambrica", "price": 847.09, "ref_price": 1541.0, "disc": 45.0, "url": "https://www.mercadolibre.com.mx/taladro-cincelador-juego-esmeriladora-inalambrica/p/MLM76222815?pdp_filters=item_id:MLM5880290356&matt_tool=80786860&matt_word=mejorahorita#wid=MLM5880290356", "img": "https://http2.mlstatic.com/D_Q_NP_2X_902300-MLA114184997978_082026-O.jpg", "headline": "Abrir una ranura a cincel y maceta un domingo por la tarde"}, {"id": "MLM4832140288", "title": "Compresor De Aire Eléctrico Portátil Foreman FO50L 50L 3hp", "price": 2499.0, "ref_price": 3371.25, "disc": 25.9, "url": "https://www.mercadolibre.com.mx/compresor-de-aire-electrico-portatil-foreman-fo50l-50l-3hp/p/MLM28606339?pdp_filters=item_id:MLM4832140288&matt_tool=80786860&matt_word=mejorahorita#wid=MLM4832140288", "img": "https://http2.mlstatic.com/D_Q_NP_2X_824714-MLA115113473124_082026-O.jpg", "headline": "Pintar el portón a brochazos es garantía de que quede escurrido y con pelos pegados"}, {"id": "MLM4636039438", "title": "Soarfly Kit De Termofusora Herramientas 1000w Para Tubos", "price": 275.0, "ref_price": 349.0, "disc": 21.2, "url": "https://www.mercadolibre.com.mx/soarfly-kit-de-termofusora-herramientas-1000w-para-tubos/p/MLM63969255?pdp_filters=item_id:MLM4636039438#wid=MLM4636039438", "img": "https://http2.mlstatic.com/D_Q_NP_2X_610671-MLA104015240555_012026-O.jpg", "headline": "¿Cuántas vueltas más de cinta teflón piensas darle a ese tubo verde antes de aceptar que el plástico no se pega con rezos?"}, {"id": "MLM2653307131", "title": "Juego De Herramientas Mecánicas Autocle Dados Acerokit 46pcs", "price": 166.0, "ref_price": 236.9, "disc": 29.9, "url": "https://www.mercadolibre.com.mx/juego-de-herramientas-mecanicas-autocle-dados-acerokit-46pcs/p/MLM41774135?pdp_filters=item_id:MLM2653307131#wid=MLM2653307131", "img": "https://http2.mlstatic.com/D_Q_NP_2X_660460-MLA99600565354_122025-O.jpg", "headline": "Hasta que no barres un tornillo debajo del tablero no entiendes por qué estorbaban las pinzas perras"}, {"id": "MLM2627583849", "title": "Juego De 46 Piezas Herramientas Mecánicas - Dados Acero S2 Rojo", "price": 118.0, "ref_price": 180.55, "disc": 34.6, "url": "https://www.mercadolibre.com.mx/juego-de-46-piezas-herramientas-mecanicas--dados-acero-s2/up/MLMU3687276346?pdp_filters=item_id:MLM2627583849#wid=MLM2627583849", "img": "https://http2.mlstatic.com/D_Q_NP_2X_988753-MLM115051203211_072026-O.jpg", "headline": "Aflojar tuercas al tanteo con unas pinzas oxidadas siempre termina con los nudillos raspados"}, {"id": "MLM1588450970", "title": "Esmeril De Banco 5 Pulgadas 120W 3500 RPM Adir 906", "price": 586.0, "ref_price": 899.0, "disc": 34.8, "url": "https://www.mercadolibre.com.mx/esmeril-de-banco-5-pulgadas-120w-3500-rpm-adir-906/p/MLM16090341?pdp_filters=item_id:MLM1588450970#wid=MLM1588450970", "img": "https://http2.mlstatic.com/D_Q_NP_2X_708847-MLA99446194114_112025-O.jpg", "headline": "Quemaste un motor de dos mil pesos porque tu broca no tenía filo"}, {"id": "MLM6237782412", "title": "Kit De Taladro Inalámbrico Destornillador Eléctrico Azul Pinchan 2000 RPM Incluye batería y cargador Iluminación LED 50 Hz/60 Hz", "price": 201.0, "ref_price": 313.75, "disc": 35.9, "url": "https://www.mercadolibre.com.mx/kit-de-taladro-inalambrico-destornillador-electrico-azul-pinchan-2000-rpm-incluye-bateria-y-cargador-iluminacion-led-50-hz60-hz/p/MLM73232480?pdp_filters=item_id:MLM6237782412#wid=MLM6237782412", "img": "https://http2.mlstatic.com/D_Q_NP_2X_673472-MLA113181518332_072026-O.jpg", "headline": "«Ahorita armo el mueble con el desarmador de mano», dijiste antes de sacarte tres ampollas en la palma"}];
+    const AFF_TAG = "80786860";
+    const AFF_WORD = "mejorahorita";
+
+    function injectAffiliateTag(rawUrl) {
+      try {
+        const u = new URL(rawUrl.trim());
+        u.searchParams.set("matt_tool", AFF_TAG);
+        u.searchParams.set("matt_word", AFF_WORD);
+        return u.toString();
+      } catch (e) {
+        return rawUrl;
+      }
+    }
+
+    function extractMlmId(str) {
+      const m = str.toUpperCase().match(/MLM[-]?(\d{6,14})/);
+      return m ? "MLM" + m[1] : null;
+    }
+
+    const auditBtn = document.getElementById('auditBtn');
+    const meliInput = document.getElementById('meliUrlInput');
+    const auditResult = document.getElementById('auditResult');
+
+    function renderAuditBox(opts) {
+      const tgDeep = "https://t.me/herramientas_radar_bot?start=audit_" + encodeURIComponent(opts.itemId || opts.cleanUrl);
+      const imgHtml = opts.img ? `<img src="${opts.img}" class="res-img" alt="Producto">` : `<div class="res-img" style="display:flex;align-items:center;justify-content:center;color:#000;font-weight:900;">ML MX</div>`;
+      auditResult.style.display = "block";
+      auditResult.innerHTML = `
+        <div class="res-grid">
+          ${imgHtml}
+          <div>
+            <span class="res-verdict ${opts.badgeClass}">${opts.badgeText}</span>
+            <div class="res-title">${opts.title}</div>
+            <div class="res-note">${opts.note}</div>
+            <div class="res-actions">
+              <a href="${opts.affUrl}" target="_blank" rel="nofollow sponsored noopener" class="btn-res-buy">
+                🛒 ABRIR PUBLICACIÓN VERIFICADA EN MERCADO LIBRE →
+              </a>
+              <a href="${tgDeep}" target="_blank" rel="noopener" class="btn-res-tg">
+                🔔 Activar alerta de caída (-15%) en Telegram
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function runLiveAudit() {
+      const raw = meliInput.value.trim();
+      if (!raw) return;
+      const urlMatch = raw.match(/https?:\/\/[^\s]+/i);
+      const targetUrl = urlMatch ? urlMatch[0] : raw;
+      const mlmId = extractMlmId(raw);
+
+      if (!targetUrl.toLowerCase().includes("mercadolibre.com") && !targetUrl.toLowerCase().includes("meli.la") && !mlmId) {
+        auditResult.style.display = "block";
+        auditResult.innerHTML = `<div style="color:#f85149;font-weight:700;">⚠️ Pega un enlace válido de Mercado Libre México (mercadolibre.com.mx o meli.la).</div>`;
+        return;
+      }
+
+      auditBtn.disabled = true;
+      auditBtn.textContent = "⏳ AUDITANDO VENDEDORES...";
+      auditResult.style.display = "block";
+      auditResult.innerHTML = `<div style="color:#00e5ff;font-weight:700;">🔎 Consultando historial y comparando precio contra otros vendedores del catálogo...</div>`;
+
+      // 1. Revisar si ya está en la base de datos auditada hoy
+      const localHit = AUDITED_DB.find(d => (mlmId && d.id === mlmId) || (mlmId && d.url.includes(mlmId)));
+      if (localHit) {
+        const sav = Math.max(0, localHit.ref_price - localHit.price);
+        renderAuditBox({
+          itemId: localHit.id,
+          cleanUrl: localHit.url,
+          affUrl: localHit.url,
+          img: localHit.img,
+          badgeClass: "v-good",
+          badgeText: `✅ DESCUENTO REAL VERIFICADO (-${Math.round(localHit.disc)}%)`,
+          title: localHit.title,
+          note: `Auditado en nuestro radar: El precio habitual entre vendedores es de <s>$${localHit.ref_price.toLocaleString('es-MX')} MXN</s> y hoy cayó a <strong style="color:#25d366;">$${localHit.price.toLocaleString('es-MX')} MXN</strong> (Ahorro real: $${sav.toLocaleString('es-MX')} MXN).`
+        });
+        auditBtn.disabled = false;
+        auditBtn.textContent = "🔍 AUDITAR PRECIO REAL";
+        return;
+      }
+
+      // 2. Inspección rápida en paralelo (máximo 2.2s sin trabarse jamás)
+      const affUrl = injectAffiliateTag(targetUrl.startsWith("http") ? targetUrl : `https://articulo.mercadolibre.com.mx/${mlmId}`);
+      let htmlText = "";
+      const proxies = [
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`,
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`
+      ];
+
+      async function fetchFast(pUrl) {
+        const ctrl = new AbortController();
+        const tid = setTimeout(() => ctrl.abort(), 2200);
+        try {
+          const resp = await fetch(pUrl, { signal: ctrl.signal });
+          clearTimeout(tid);
+          if (!resp.ok) throw new Error("HTTP error");
+          const txt = await resp.text();
+          if (!txt || txt.length < 1000) throw new Error("Empty");
+          return txt;
+        } catch (err) {
+          clearTimeout(tid);
+          throw err;
+        }
+      }
+
+      try {
+        htmlText = await Promise.any(proxies.map(fetchFast));
+      } catch (e) {
+        htmlText = "";
+      }
+
+      if (htmlText) {
+        const doc = new DOMParser().parseFromString(htmlText, "text/html");
+        const ogTitle = (doc.querySelector('meta[property="og:title"]')?.content || doc.querySelector('h1')?.textContent || "Producto en Mercado Libre México").replace(/\s*\|\s*Mercado\s*Libre.*/i, "").trim();
+        const ogImg = doc.querySelector('meta[property="og:image"]')?.content || "";
+        const ogUrl = doc.querySelector('link[rel="canonical"]')?.href || targetUrl;
+        const finalAffUrl = injectAffiliateTag(ogUrl);
+
+        let nowPrice = 0;
+        const ogPriceMatch = ogTitle.match(/\$\s*([\d,]+(?:\.\d{1,2})?)/);
+        if (ogPriceMatch) {
+          nowPrice = parseFloat(ogPriceMatch[1].replace(/,/g, ""));
+        }
+        if (!nowPrice) {
+          const fracEl = doc.querySelector('.ui-pdp-price__second-line .andes-money-amount__fraction, .andes-money-amount__fraction');
+          if (fracEl) nowPrice = parseFloat(fracEl.textContent.replace(/[^\d.]/g, "")) || 0;
+        }
+
+        let oldPrice = 0;
+        const oldEl = doc.querySelector('.andes-money-amount--previous .andes-money-amount__fraction');
+        if (oldEl) oldPrice = parseFloat(oldEl.textContent.replace(/[^\d.]/g, "")) || 0;
+
+        if (nowPrice > 0) {
+          if (oldPrice > nowPrice * 1.45) {
+            renderAuditBox({
+              itemId: mlmId || "",
+              cleanUrl: ogUrl,
+              affUrl: finalAffUrl,
+              img: ogImg,
+              badgeClass: "v-warn",
+              badgeText: "⚠️ PRECIO TACHADO INFLADO DETECTADO",
+              title: ogTitle,
+              note: `El vendedor tachó un supuesto precio anterior de <s>$${oldPrice.toLocaleString('es-MX')} MXN</s> para aparentar un mega-descuento, pero el precio real de venta actual es <strong style="color:#ffd600;">$${nowPrice.toLocaleString('es-MX')} MXN</strong>. Abre el enlace verificado abajo o activa la alerta en Telegram si quieres esperar a que caiga un 15% adicional.`
+            });
+          } else if (oldPrice > nowPrice * 1.08) {
+            const realPct = Math.round(((oldPrice - nowPrice) / oldPrice) * 100);
+            renderAuditBox({
+              itemId: mlmId || "",
+              cleanUrl: ogUrl,
+              affUrl: finalAffUrl,
+              img: ogImg,
+              badgeClass: "v-good",
+              badgeText: `✅ BAJADA DE PRECIO LEGÍTIMA (-${realPct}%)`,
+              title: ogTitle,
+              note: `Precio actual verificado: <strong style="color:#25d366;">$${nowPrice.toLocaleString('es-MX')} MXN</strong> (frente a $${oldPrice.toLocaleString('es-MX')} MXN habituales sin inflación artificial exagerada).`
+            });
+          } else {
+            renderAuditBox({
+              itemId: mlmId || "",
+              cleanUrl: ogUrl,
+              affUrl: finalAffUrl,
+              img: ogImg,
+              badgeClass: "v-warn",
+              badgeText: "⚖️ PRECIO ESTÁNDAR SIN REBAJA",
+              title: ogTitle,
+              note: `Actualmente se vende en <strong>$${nowPrice.toLocaleString('es-MX')} MXN</strong> a precio regular de catálogo. Puedes comprarlo con enlace limpio abajo o activar el monitor en Telegram para que te avisemos si se desploma en el Buen Fin.`
+            });
+          }
+          auditBtn.disabled = false;
+          auditBtn.textContent = "🔍 AUDITAR PRECIO REAL";
+          return;
+        }
+      }
+
+      // 3. Fallback limpio para links cortos meli.la o redes con bloqueo CORS
+      renderAuditBox({
+        itemId: mlmId || "",
+        cleanUrl: targetUrl,
+        affUrl: affUrl,
+        img: "",
+        badgeClass: "v-good",
+        badgeText: "🔗 ENLACE LIMPIO Y DESBLOQUEADO",
+        title: "Publicación de Mercado Libre México lista para verificar",
+        note: "Generamos tu enlace directo con seguimiento limpio de precio para la app de Mercado Libre. Si es un link corto (meli.la), también puedes tocar el botón de Telegram para que el servidor audite a todos los vendedores en 3 segundos."
+      });
+      auditBtn.disabled = false;
+      auditBtn.textContent = "🔍 AUDITAR PRECIO REAL";
+    }
+
+    auditBtn.addEventListener('click', runLiveAudit);
+    meliInput.addEventListener('keydown', e => { if (e.key === 'Enter') runLiveAudit(); });
+
+    const searchInput = document.getElementById('searchInput');
+    const catButtons = document.querySelectorAll('.cat-btn');
+    const cards = document.querySelectorAll('.deal-card');
+    let activeCat = 'ALL';
+
+    function filterCards() {
+      const q = searchInput.value.trim().toLowerCase();
+      cards.forEach(card => {
+        const matchCat = (activeCat === 'ALL') || (card.getAttribute('data-cat') === activeCat);
+        const matchText = !q || card.getAttribute('data-search').includes(q);
+        card.style.display = (matchCat && matchText) ? 'flex' : 'none';
+      });
+    }
+
+    searchInput.addEventListener('input', filterCards);
+    catButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        catButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCat = btn.getAttribute('data-cat');
+        filterCards();
+      });
+    });
+  </script>
+</body>
+</html>

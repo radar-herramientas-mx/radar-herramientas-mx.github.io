@@ -2,9 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://radar-herramientas-mx.github.io/</loc>
-    <lastmod>2026-11-15</lastmod>
+    <lastmod>2026-11-16</lastmod>
     <changefreq>hourly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://radar-herramientas-mx.github.io/ofertas/martillo-demoledor-amoladora-angular-con-2-baterias-21v-amarillo-mlm5523525484.html</loc>
+    <lastmod>2026-11-16</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://radar-herramientas-mx.github.io/ofertas/juego-manometros-refrigeracion-manifold-r22-r134a-r404a-r410a-buyio-mlm5026522334.html</loc>

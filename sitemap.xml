@@ -2,9 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://radar-herramientas-mx.github.io/</loc>
-    <lastmod>2026-11-16</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <changefreq>hourly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://radar-herramientas-mx.github.io/ofertas/kit-de-taladro-inalambrico-destornillador-electrico-azul-pinchan-2000-mlm5491950264.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://radar-herramientas-mx.github.io/ofertas/juego-llave-combinada-adooadii-10-piezas-acero-cromado-metrico-mlm4002146566.html</loc>
